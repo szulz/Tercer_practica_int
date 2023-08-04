@@ -46,6 +46,11 @@ class ProductController {
         });
     }
 
+    async returnStock(req, res) {
+        let product = await productDao.findById(req.params.pid)
+        return res.status(200).send({ data: product.stock });
+    }
+
 }
 
 module.exports = ProductController

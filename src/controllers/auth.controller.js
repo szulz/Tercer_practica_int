@@ -1,6 +1,8 @@
+const { PORT } = require("../config/env.config.js")
 const SessionDTO = require("../model/DTO/session.dto.js")
 const AuthService = require("../services/auth.service.js")
 const authService = new AuthService
+
 
 class AuthController {
     async logOut(req, res) {
@@ -23,7 +25,8 @@ class AuthController {
     }
 
     async register(req, res) {
-        return res.status(200).send({ status: "success", message: 'user created', payload: req.user })
+        let user = req.user.first_name
+        return res.render('welcome', {user, PORT})
         //podria agregar una vista de registrado successfull
     }
     async failure(req, res) {

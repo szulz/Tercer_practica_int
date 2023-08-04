@@ -5,7 +5,7 @@ class SessionsController {
     }
 
     returnUser(req, res) {
-        let user = req.session
+        let user = req.user
         return res.status(200).send({
             status: 'Success',
             payload: user

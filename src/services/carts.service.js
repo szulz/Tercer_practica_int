@@ -52,6 +52,24 @@ class CartService {
         }
     }
 
+    async getTotalAmount(products) {
+        let totalAmount = []
+        let result = 0
+        let price = products.map(product => {
+            return product.price
+        })
+        let amount = products.map(x => {
+            return x.quantity
+        })
+        for (let i = 0; i < products.length; i++) {
+            let value = price[i] * amount[i]
+            totalAmount.push(value)
+        }
+        for (let i = 0; i < totalAmount.length; i++) {
+            result += totalAmount[i]
+        }
+        return result
+    }
     /*
     async updateCart(cartId, newProducts, newQuantity) {
         if (!newQuantity) {

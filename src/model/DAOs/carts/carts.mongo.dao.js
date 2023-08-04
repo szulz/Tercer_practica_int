@@ -10,10 +10,7 @@ class CartsDao {
         return await cartsModel.findById(id).populate('cart.product')
     }
 
-    async addProduct(cartId, productId) {
-        //agrego al carro, checkeo si hay stock (isAvaliable) y decremento, aumento la quantity en el carro
-        //falta avisar que si no hay stock, no aparece en el carro FIJARSE EN EL VIEW.JS
-        //CUANDO AGREGO AL CARRO CHECKEE SI EL PROD DEL ID TIENE STOCK Y HACER UN IF
+    async addProduct(cartId) {
         let existingCart = await this.findById(cartId)
         return existingCart
     }

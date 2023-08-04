@@ -8,23 +8,10 @@ class CartsController {
 
     async userCart(req, res) {
         const products = await cartService.userCart(req.params.cid);
-        let totalAmount = []
-        let result = 0
-        let price = products.map(product => {
-            return product.price
-        })
-        let amount = products.map(x => {
-            return x.quantity
-        })
-        for (let i = 0; i < products.length; i++) {
-            let value = price[i] * amount[i]
-            totalAmount.push(value)
+        if (products.empty) {
+            return res.render("carts", { products })
         }
-        for (let i = 0; i < totalAmount.length; i++) {
-            result += totalAmount[i]
-        }
-        console.log(result);
-
+        const result = await cartService.getTotalAmount(products)
         return res.render("carts", { products, result })
     }
 

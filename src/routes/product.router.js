@@ -2,6 +2,7 @@ const express = require('express');
 const { PORT } = require('../config/env.config.js');
 const ProductController = require('../controllers/product.controller.js');
 const Auth = require('../middlewares/auth.js');
+const productModel = require('../model/schemas/product.schema.js');
 const auth = new Auth
 const productController = new ProductController
 const productRouter = express.Router();
@@ -18,6 +19,8 @@ productRouter.get("/", async (req, res) => {
     })
     return res.render("products", { products, getAll, cartId, PORT })
 })
+
+productRouter.get("/stock/:pid", productController.returnStock)
 
 productRouter.post('/', auth.isAdmin, productController.createOne);
 

@@ -2,7 +2,6 @@ const fs = require('fs');
 const express = require('express');
 const { json } = require('express');
 const handlebars = require('express-handlebars')
-//const productsRouter = require('./routes/product.router.backup');
 const productRouter = require('./routes/product.router.js')
 const passport = require('passport')
 const startPassport = require('./config/passport.config.js');
@@ -18,6 +17,7 @@ const MongoStore = require('connect-mongo');
 
 const myModules = require('./utils/utils.js')
 const path = require('path');
+const profileRouter = require('./routes/profile.router.js');
 const app = express();
 
 // --------CONNECT TO MONGO--------
@@ -58,6 +58,7 @@ app.use('/api/sessions', sessionRouter);
 app.use('/products', productRouter);
 app.use('/carts', cartsRouter);
 app.use('/auth', authRouter)
+app.use('/profile', profileRouter)
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`)

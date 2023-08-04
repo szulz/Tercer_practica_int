@@ -46,6 +46,10 @@ class ProductDao {
             return productToCheck.stock
         }
     }
+    async findById(id) {
+        let productToCheck = await productModel.findById(id)
+        return productToCheck
+    }
 
 }
 

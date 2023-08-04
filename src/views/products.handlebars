@@ -1,4 +1,7 @@
-<button onclick="logOut()">Log Out</button> <br> 
+<button onclick="logOut()">Log Out</button> <br> <br> 
+<a href="http://localhost:{{PORT}}/profile">👥PROFILE</a>||<a href="http://localhost:{{PORT}}/carts/{{cartId}}">🛒 GO TO CART</a> <br>
+
+
 <br>
 {{#each products}}
 <div>
@@ -11,9 +14,11 @@
 </div>
 {{/each}}
 <br>
-<a href="http://localhost:{{PORT}}/carts/{{cartId}}">🛒 GO TO CART</a> <br>
-pages: {{#if getAll.prevLink}} <a href="{{getAll.prevLink}}">prev page</a> {{/if}} {{getAll.page}} {{#if getAll.nextLink}}<a
-    href="{{getAll.nextLink}}">next page</a>{{/if}}
+
+Page: {{#if getAll.prevLink}} <a href="{{getAll.prevLink}}">prev</a> {{/if}} {{getAll.page}} {{#if
+getAll.nextLink}}<a href="{{getAll.nextLink}}">next</a>{{/if}}
+
+<br>
 
 
 <script src="/js/views.js"></script>
