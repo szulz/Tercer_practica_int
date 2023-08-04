@@ -6,8 +6,9 @@ const GitHubStrategy = require('passport-github2')
 const FacebookStrategy = require('passport-facebook')
 const GoogleStrategy = require('passport-google-oauth2');
 const CartManagerMongoose = require('../services/carts.service.js');
-const userModel = require('../DAO/models/users.model.js');
-const { GITHUB_ID, GOOGLE_ID, FACEBOOK_ID } = require('./env.config.js');
+
+const { GITHUB_ID, GOOGLE_ID, FACEBOOK_ID, PORT } = require('./env.config.js');
+const userModel = require('../model/schemas/users.model.js');
 const cartManagerMongoose = new CartManagerMongoose
 
 
@@ -19,7 +20,7 @@ async function startPassport() {
             {
                 clientID: GITHUB_ID,
                 clientSecret: 'db2a529ef55ff5f08af0e95f0a2836c7f4ac5de6',
-                callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
+                callbackURL: `http://localhost:${PORT}/api/sessions/githubcallback`
             },
             async (accessTocken, _, profile, done) => {
                 try {
@@ -60,7 +61,7 @@ async function startPassport() {
             {
                 clientID: GOOGLE_ID,
                 clientSecret: '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',
-                callbackURL: "http://localhost:8080/api/sessions/googlecallback",
+                callbackURL: `http://localhost:${PORT}/api/sessions/googlecallback`,
                 scope: ['https://www.googleapis.com/auth/userinfo.profile', 'email', 'name', 'displayName'],
                 passReqToCallback: true,
 
@@ -102,7 +103,7 @@ async function startPassport() {
             {
                 clientID: FACEBOOK_ID,
                 clientSecret: 'fede9849c4b17736f98a021e7dd8c51d',
-                callbackURL: 'http://localhost:8080/api/sessions/facebookcallback',
+                callbackURL: `http://localhost:${PORT}/api/sessions/facebookcallback`,
                 profileFields: ['id', 'emails', 'name']
             },
             async (accessTocken, _, profile, done) => {

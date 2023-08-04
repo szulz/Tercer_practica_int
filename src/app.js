@@ -2,12 +2,12 @@ const fs = require('fs');
 const express = require('express');
 const { json } = require('express');
 const handlebars = require('express-handlebars')
-const productsRouter = require('./routes/product.router.js');
-const viewsRouter = require('./routes/views.router.js')
+//const productsRouter = require('./routes/product.router.backup');
+const productRouter = require('./routes/product.router.js')
 const passport = require('passport')
 const startPassport = require('./config/passport.config.js');
 const sessionRouter = require('./routes/sessions.router.js');
-const { MONGO_URL, PORT, ADMIN_EMAIL, ADMIN_PASSWORD, MODE } = require('./config/env.config.js');
+const { MONGO_URL, PORT, ADMIN_EMAIL, ADMIN_PASSWORD, MODE, ADMIN_STATUS } = require('./config/env.config.js');
 console.log(MODE);
 //--------login----------
 const cartsRouter = require('./routes/carts.router.js')
@@ -55,8 +55,7 @@ app.get('/session', (req, res) => {
 })
 
 app.use('/api/sessions', sessionRouter);
-app.use('/api/products', productsRouter);
-app.use('/products', viewsRouter);
+app.use('/products', productRouter);
 app.use('/carts', cartsRouter);
 app.use('/auth', authRouter)
 

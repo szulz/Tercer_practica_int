@@ -7,20 +7,37 @@ CartService
 class CartsController {
 
     async userCart(req, res) {
-        const products = await cartService.userCart(req.params.cid)
-        return res.render("carts", { products })
+        const products = await cartService.userCart(req.params.cid);
+        let totalAmount = []
+        let result = 0
+        let price = products.map(product => {
+            return product.price
+        })
+        let amount = products.map(x => {
+            return x.quantity
+        })
+        for (let i = 0; i < products.length; i++) {
+            let value = price[i] * amount[i]
+            totalAmount.push(value)
+        }
+        for (let i = 0; i < totalAmount.length; i++) {
+            result += totalAmount[i]
+        }
+        console.log(result);
+
+        return res.render("carts", { products, result })
     }
 
     async addProduct(req, res) {
-        let cartData = await cartService.addToCart(req.session.user.cart[0], req.params.pid);
+        let cartData = await cartService.addToCart(req.session.user.cartID, req.params.pid);
         return res.status(200).send({
             status: 'success',
-            msg: `A new product has been added to the cart with the id ${req.session.user.cart[0]}`,
-            data: cartData._id
+            msg: `A new product has been added to the cart with the id ${req.session.user.cartID}`,
+            data: cartData
         });
     }
 
-    async deleteProduct (req, res) {
+    async deleteProduct(req, res) {
         try {
             let response = await cartService.deleteProduct(req.params.cid, req.params.pid);
             if (response) {

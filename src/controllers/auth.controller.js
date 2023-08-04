@@ -1,6 +1,6 @@
+const SessionDTO = require("../model/DTO/session.dto.js")
 const AuthService = require("../services/auth.service.js")
 const authService = new AuthService
-
 
 class AuthController {
     async logOut(req, res) {
@@ -12,11 +12,9 @@ class AuthController {
         return res.render('login', {})
     }
 
-    async saveSession(req, res) {
-        console.log(req.session);
-        //tengo que pasarlo a el dto para que me reestructure el usuario para hacerlo mas legible
-        //sacarle la basura y retornarlo
-        await authService.saveSession(req.session, req.user)
+    async login(req, res) {
+        let clearUser = new SessionDTO(await req.user)
+        req.session.user = clearUser
         return res.redirect('/products')
     }
 
@@ -24,6 +22,10 @@ class AuthController {
         return res.render('register', {})
     }
 
+    async register(req, res) {
+        return res.status(200).send({ status: "success", message: 'user created', payload: req.user })
+        //podria agregar una vista de registrado successfull
+    }
     async failure(req, res) {
         return res.status(400).send({
             status: 'Something went wrong!',

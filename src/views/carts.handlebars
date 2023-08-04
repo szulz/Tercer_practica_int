@@ -1,10 +1,16 @@
+{{#if products.empty}}
+{{products.empty}} <br>
+{{else}}
+
 {{#each products}}
 <div>
-    title: {{this.title}} <br>
-    description: {{this.description}} <br>
-    price: {{this.price}} <br>
-    quantity: {{this.quantity}} <br>
+    x{{this.quantity}} {{this.title}} <br>
+    ${{this.price}} each <br>
     <br>
 </div>
 {{/each}}
+
+Total amount: {{result}}$ <br>
+
+{{/if}}
 <a href="/products">Go back</a> <br>

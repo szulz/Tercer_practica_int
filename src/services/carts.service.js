@@ -1,37 +1,52 @@
 
-const { CartsModels } = require("../DAO/models/carts.model.js");
-const cartsModels = new CartsModels
-const { cartsModel } = require("../DAO/models/carts.model.js");
-const { productModel } = require("../DAO/models/product.model");
+const CartsDao = require("../model/DAOs/carts/carts.mongo.dao.js");
+const ProductDao = require("../model/DAOs/products/products.mongo.dao.js");
+const productDao = new ProductDao
+const cartsDao = new CartsDao
 
 class CartService {
 
     async createCart() {
-        let newcart = await cartsModels.create()
+        let newcart = await cartsDao.create()
         return newcart
     }
 
     async userCart(id) {
-        let cartCountent = await cartsModels.findById(id)
+        let cartCountent = await cartsDao.findById(id)
+        if (cartCountent.cart == '') {
+            console.log('empty cart');
+            let products = { empty: 'You have not added anything to the cart yet!' }
+            return products
+        }
         let products = cartCountent.cart.map((cart) => {
-            return { title: cart.product.title, description: cart.product.description, price: cart.product.price, quantity: cart.quantity }
+            return { title: cart.product.title, description: cart.product.description, price: cart.product.price, stock: cart.product.stock, quantity: cart.quantity }
         })
         return products
     }
 
     async addToCart(cartId, productId) {
         try {
-            let cart = await cartsModels.addProduct(cartId, productId)
-            return cart;
+            let foundCart = await cartsDao.addProduct(cartId)
+            const foundProduct = foundCart.cart.find((item) => item.product._id == productId);
+            let isAvaliable = await productDao.decreaseStock(productId)
+            if (isAvaliable > 0) {
+                if (foundProduct) {
+                    foundProduct.quantity += 1;
+                } else {
+                    foundCart.cart.push({ product: productId, quantity: 1 });
+                }
+                await foundCart.save()
+                return foundCart
+            }
+            return foundCart;
         } catch (e) {
             throw new Error('error en addtocart')
         }
     }
 
-
     async deleteProduct(cartId, productId) {
         try {
-            return await cartsModels.deleteById(cartId, productId)
+            return await cartsDao.deleteById(cartId, productId)
         } catch (e) {
             throw new Error(e.message)
         }

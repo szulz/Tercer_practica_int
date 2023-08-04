@@ -1,6 +1,6 @@
-const { ProductModels } = require("../DAO/models/product.model.js");
-const productModels = new ProductModels
-const { productModel } = require("../DAO/models/product.model");
+const ProductDao = require("../model/DAOs/products/products.mongo.dao.js");
+const productModel = require("../model/schemas/product.schema.js");
+const productDao = new ProductDao
 const ProductService = require("../services/product.service.js");
 const productService = new ProductService
 
@@ -8,7 +8,8 @@ const productService = new ProductService
 class ProductController {
 
     async createOne(req, res) {
-        let newProd = await productModels.createProduct(req.body);
+        console.log(req.body);
+        let newProd = await productDao.createProduct(req.body);
         return res.status(200).send({
             status: 'Product successfully added!',
             msg: `The following product has been added to the list:`,
@@ -29,7 +30,7 @@ class ProductController {
     async modifyProperties(req, res) {
         //cree algunas de las funciones directamente en el modelo ya que no veia necesario usar el service 
         //para llamar unicamente a una funcion que directamente lo puedo hacer acá
-        let updatedProduct = await productModels.updateProduct(req.params.id, req.body);
+        let updatedProduct = await productDao.updateProduct(req.params.id, req.body);
         return res.status(200).send({
             status: 'Product successfully updated!',
             msg: `The following product has been updated:`,
@@ -39,7 +40,7 @@ class ProductController {
     }
 
     async deleteById(req, res) {
-        await productModels.deleteProduct(req.params.id)
+        await productDao.deleteProduct(req.params.id)
         return res.status(200).send({
             status: 'Product successfully deleted!',
         });

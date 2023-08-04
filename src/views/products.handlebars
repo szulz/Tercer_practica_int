@@ -1,19 +1,19 @@
-<button id="cartButton" class="btn">🛒 GO TO CART</button> <a href="/auth/logOut">Log Out</a>
-
+<button onclick="logOut()">Log Out</button> <br> 
+<br>
 {{#each products}}
 <div>
-    title: {{this.title}} <br>
-    description: {{this.description}} <br>
-    price: {{this.price}} <br>
+    {{this.title}} <br>
+    {{this.description}} <br>
+    {{this.price}}$ <br>
+    Stock: {{this.stock}} <br>
     <button onclick="addProduct({{this._id}})">ADD TO CART</button>
     <br>
 </div>
 {{/each}}
-
-{{#if getAll.prevLink}} <a href="{{getAll.prevLink}}">prev page</a> {{/if}} {{getAll.page}} {{#if getAll.nextLink}}<a
+<br>
+<a href="http://localhost:{{PORT}}/carts/{{cartId}}">🛒 GO TO CART</a> <br>
+pages: {{#if getAll.prevLink}} <a href="{{getAll.prevLink}}">prev page</a> {{/if}} {{getAll.page}} {{#if getAll.nextLink}}<a
     href="{{getAll.nextLink}}">next page</a>{{/if}}
 
-
-<button onclick="clearLocalStorage()">reset localStorage</button>
 
 <script src="/js/views.js"></script>

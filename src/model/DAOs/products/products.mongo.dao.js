@@ -1,20 +1,7 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2')
-
-const productCollection = 'products'
-
-const productSchema = new mongoose.Schema({
-    title: { type: String, required: true, max: 100 },
-    description: { type: String, required: true, max: 100 },
-    price: { type: Number, required: true, max: 99999999 },
-});
-
-productSchema.plugin(mongoosePaginate);
-
-const productModel = mongoose.model(productCollection, productSchema);
+const productModel = require("../../schemas/product.schema");
 
 
-class ProductModels {
+class ProductDao {
 
     async getAll() {
         return productModel.find
@@ -24,7 +11,8 @@ class ProductModels {
         const createdProduct = new productModel({
             title: newProd.title,
             description: newProd.description,
-            price: newProd.price
+            price: newProd.price,
+            stock: newProd.stock
         });
         return await createdProduct.save();
     };
@@ -49,9 +37,16 @@ class ProductModels {
             throw new Error('error en delete product');
         }
     }
+
+    async decreaseStock(id) {
+        let productToCheck = await productModel.findById(id)
+        if (productToCheck.stock > 0) {
+            productToCheck.stock -= 1
+            productToCheck.save()
+            return productToCheck.stock
+        }
+    }
+
 }
 
-module.exports = {
-    ProductModels: ProductModels,
-    productModel: productModel
-}
+module.exports = ProductDao

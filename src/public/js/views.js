@@ -11,10 +11,6 @@ async function addProduct(productId) {
         fetch(`/carts/products/${productId}`, {
             method: "POST",
         })
-            .then(response => response.json())
-            .then(data => {
-                localStorage.setItem('cartId', JSON.stringify(data.data))
-            })
         window.alert("Product added to the cart")
     } catch (e) {
         res.send({ msg: e })
@@ -22,16 +18,12 @@ async function addProduct(productId) {
 }
 
 
-document.getElementById('cartButton').addEventListener('click', function () {
-    let cartId = localStorage.getItem('cartId')
-    redirectToURL(`http://localhost:8080/carts/${JSON.parse(cartId)}`);
-});
-
 function redirectToURL(url) {
     window.location.href = url;
 }
 
 
-async function clearLocalStorage() {
-    return localStorage.clear()
+async function logOut() {
+    localStorage.clear()
+    redirectToURL(`http://localhost:8080/auth/logOut`)
 }

@@ -1,4 +1,4 @@
-const { ADMIN_EMAIL, ADMIN_PASSWORD } = require("../config/env.config.js");
+const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_STATUS} = require("../config/env.config.js");
 
 
 class Auth {
@@ -27,15 +27,12 @@ class Auth {
     }
 
     async isAdmin(req, res, next) {
-        if (ADMIN_EMAIL == false) {
-            console.log('no sos admin');
+        if (ADMIN_STATUS == 'true') {
+            console.log('Seguí crack');
+            return next();
         } else {
-            console.log('sos adm')
-            return res.redirect('auth/login')
-            
+            throw new Error({message: 'You have no permission to make perform these actions'})
         }
-
-        return next()
     }
 
 }

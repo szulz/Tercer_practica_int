@@ -11,11 +11,11 @@ authRouter.get('/logOut', authController.logOut)
 
 authRouter.get('/login', auth.currentSession, authController.logInGet)
 
-authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/fail' }), authController.saveSession)
+authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/fail' }), authController.login)
 
 authRouter.get('/register', auth.currentSession, authController.registerGet)
 
-authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/fail' }), authController.saveSession)
+authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/fail' }), authController.register)
 
 authRouter.get('/fail', authController.failure)
 
