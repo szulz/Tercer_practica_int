@@ -16,4 +16,12 @@ cartsRouter.post('/products/:pid', cartsController.addProduct);
 //agregar boton para eliminar prod / decrementar la quantity
 cartsRouter.delete('/:cid/products/:pid', cartsController.deleteProduct)
 
+//ticket view
+cartsRouter.get('/:cid/purchase', cartsController.ticketView)
+
+//
+cartsRouter.get('/:cid/checkout', cartsController.generateTicket)
+
+
+
 module.exports = cartsRouter

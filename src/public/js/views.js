@@ -39,3 +39,9 @@ async function logOut() {
     localStorage.clear()
     redirectToURL(`http://localhost:8080/auth/logOut`)
 }
+
+async function goToPurchase() {
+    const currentURL = window.location.href;
+    const purchaseURL = currentURL + "/purchase";
+    window.location.href = purchaseURL;
+}

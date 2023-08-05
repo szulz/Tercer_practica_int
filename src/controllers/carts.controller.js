@@ -1,8 +1,9 @@
 const CartService = require("../services/carts.service.js");
 const cartService = new CartService
 const CartManagerMongoose = require("../services/carts.service.js");
+const TicketService = require("../services/ticket.service.js");
+const ticketService = new TicketService
 const cartManagerMongoose = new CartManagerMongoose
-CartService
 
 class CartsController {
 
@@ -34,6 +35,22 @@ class CartsController {
         } catch (error) {
             res.status(400).send({ msg: error.message });
         }
+    }
+
+    async ticketView(req, res) {
+        const cartid = req.session.user.cartID
+        const products = await cartService.userCart(req.params.cid);
+        if (products.empty) {
+            return res.render("ticketsView", { products })
+        }
+        const result = await cartService.getTotalAmount(products)
+        return res.render("ticketsView", { products, result, cartid })
+    }
+
+    async generateTicket(req, res) {
+        const user = req.session.user
+        const ticket = await ticketService.purchase(user)
+        return res.render('checkout', ticket)
     }
 }
 
