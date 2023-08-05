@@ -7,7 +7,7 @@ const cartService = new CartService
 
 class TicketService {
     async purchase(user) {
-        let user_code = Math.floor(Math.random() * 1000000)
+        let user_code = Math.floor(Math.random() * 100000000)
         let user_purchase_datetime = new Date();
         let user_productsInCart = await cartService.userCart(user.cartID)
         let user_amount = await cartService.getTotalAmount(user_productsInCart)
