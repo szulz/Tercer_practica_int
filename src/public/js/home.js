@@ -7,8 +7,8 @@ function deleteProduct(id) {
 
 async function finishPurchase(cartid) {
     let redirectUrl = `/carts/${cartid}/checkout`
-    fetch(`/carts/${cartid}/checkout`, {
-        method: 'GET',
+    fetch(`/carts/${cartid}/purchase`, {
+        method: 'POST',
     })
     window.location.href = redirectUrl
 }

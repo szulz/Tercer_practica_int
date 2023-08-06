@@ -21,6 +21,14 @@ class TicketService {
         let createdTicket = await ticketsDao.createTicket(ticket)
         return createdTicket
     }
+
+    async find() {
+        return await ticketsDao.find()
+    }
+
+    async findTicketById(ticketId) {
+        return await ticketsDao.findById(ticketId)
+    }
 }
 
 module.exports = TicketService

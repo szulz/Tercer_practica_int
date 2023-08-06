@@ -1,6 +1,8 @@
 
 const CartsDao = require("../model/DAOs/carts/carts.mongo.dao.js");
 const ProductDao = require("../model/DAOs/products/products.mongo.dao.js");
+const cartsModel = require("../model/schemas/carts.schema.js");
+const productModel = require("../model/schemas/product.schema.js");
 const productDao = new ProductDao
 const cartsDao = new CartsDao
 
@@ -69,6 +71,32 @@ class CartService {
             result += totalAmount[i]
         }
         return result
+    }
+
+    async returnAndClear(cartId) {
+        let cartFound = await cartsDao.findById(cartId)
+        if (cartFound.cart == '') {
+            console.log('EL CARRITO ESTÁ VACIO');
+            return
+        }
+        /*
+        const productOnCart = cartFound.cart.map(item => item.product._id)
+        const quantitiesOnCart = cartFound.cart.map(item => item.quantity)
+        for (let i = 0; productOnCart.length > i; i++) {
+            let product = await productModel.findById(productOnCart[i])
+            console.log(product);
+            product.stock -= quantitiesOnCart[i]
+            product.save()
+        }
+        */
+        cartFound.cart = []
+        return await cartFound.save()
+    }
+
+    async clearCart(id) {
+        let cartData = await cartsDao.findById(id)
+        cartData.cart = []
+        return cartData.save()
     }
     /*
     async updateCart(cartId, newProducts, newQuantity) {

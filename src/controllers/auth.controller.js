@@ -5,9 +5,10 @@ const authService = new AuthService
 
 
 class AuthController {
-    async logOut(req, res) {
+    async logOut(req, res, next) {
         authService.logOut(req.session)
-        return res.redirect('/auth/login')
+        res.redirect('/auth/login')
+        next()
     }
 
     async logInGet(req, res) {
@@ -26,7 +27,7 @@ class AuthController {
 
     async register(req, res) {
         let user = req.user.first_name
-        return res.render('welcome', {user, PORT})
+        return res.render('welcome', { user, PORT })
         //podria agregar una vista de registrado successfull
     }
     async failure(req, res) {

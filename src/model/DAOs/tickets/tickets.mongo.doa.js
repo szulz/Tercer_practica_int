@@ -6,6 +6,14 @@ class TicketsDao {
         const createdTicket = await ticketsModel.create(ticket)
         return createdTicket
     }
+
+    async findById(ticket) {
+        return await ticketsModel.findById(ticket)
+    }
+
+    async find() {
+        return await ticketsModel.find()
+    }
 }
 
 module.exports = TicketsDao

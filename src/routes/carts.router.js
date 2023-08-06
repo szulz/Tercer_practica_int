@@ -19,8 +19,9 @@ cartsRouter.delete('/:cid/products/:pid', cartsController.deleteProduct)
 //ticket view
 cartsRouter.get('/:cid/purchase', cartsController.ticketView)
 
+cartsRouter.post('/:cid/purchase', cartsController.generateTicket)
 //
-cartsRouter.get('/:cid/checkout', cartsController.generateTicket)
+cartsRouter.get('/:cid/checkout', cartsController.showTicket)
 
 
 

@@ -4,10 +4,12 @@ const auth = new Auth;
 const authRouter = express.Router();
 const passport = require('passport');
 const AuthController = require('../controllers/auth.controller.js');
+const CartsController = require('../controllers/carts.controller.js');
+const cartsController = new CartsController
 const authController = new AuthController
 
 
-authRouter.get('/logOut', authController.logOut)
+authRouter.get('/logOut', cartsController.clearCart , authController.logOut)
 
 authRouter.get('/login', auth.currentSession, authController.logInGet)
 

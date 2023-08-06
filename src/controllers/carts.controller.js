@@ -48,10 +48,28 @@ class CartsController {
     }
 
     async generateTicket(req, res) {
-        const user = req.session.user
-        const ticket = await ticketService.purchase(user)
-        return res.render('checkout', ticket)
+        let user = req.session.user
+        await ticketService.purchase(user)
     }
+
+    async clearCart(req, res, next) {
+        let cartId = req.session.user.cartID
+        await cartService.returnAndClear(cartId)
+        next()
+    }
+
+    async showTicket(req, res) {
+        let cartId = req.session.user.cartID
+        await cartService.returnAndClear(cartId)
+        let tickets = await ticketService.find()
+        let purchaser = tickets.map(ticket => ticket.purchaser)
+        let actualPurchaser = purchaser.length - 1
+        let actualTicketId = tickets[actualPurchaser]._id
+        let ticket = await ticketService.findTicketById(actualTicketId)
+        console.log(ticket);
+        res.render('checkout', ticket)
+    }
+
 }
 
 module.exports = CartsController
