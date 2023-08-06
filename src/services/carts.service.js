@@ -30,21 +30,35 @@ class CartService {
         try {
             let foundCart = await cartsDao.addProduct(cartId)
             const foundProduct = foundCart.cart.find((item) => item.product._id == productId);
-            let isAvaliable = await productDao.decreaseStock(productId)
-            if (isAvaliable > 0) {
-                if (foundProduct) {
-                    foundProduct.quantity += 1;
-                } else {
-                    foundCart.cart.push({ product: productId, quantity: 1 });
-                }
-                await foundCart.save()
-                return foundCart
-            }
-            return foundCart;
+            let response = await productDao.decreaseStock(productId, foundProduct, foundCart)
+            return response
         } catch (e) {
             throw new Error('error en addtocart')
         }
     }
+    /*
+        async addToCart(cartId, productId) {
+            try {
+                let foundCart = await cartsDao.addProduct(cartId)
+                const foundProduct = foundCart.cart.find((item) => item.product._id == productId);
+                console.log(foundProduct);
+                let isAvaliable = await productDao.decreaseStock(productId)
+                if (isAvaliable > 0) {
+                    if (foundProduct) {
+                        foundProduct.quantity += 1;
+                    } else {
+                        foundCart.cart.push({ product: productId, quantity: 1 });
+                    }
+                    await foundCart.save()
+                    return foundCart
+                }
+                return foundCart;
+            } catch (e) {
+                throw new Error('error en addtocart')
+            }
+        }
+    */
+
 
     async deleteProduct(cartId, productId) {
         try {

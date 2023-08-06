@@ -38,6 +38,24 @@ class ProductDao {
         }
     }
 
+    async decreaseStock(productId, foundProduct, foundCart) {
+        let productToCheck = await productModel.findById(productId)
+        if (productToCheck.stock > 0) {
+            productToCheck.stock -= 1
+            productToCheck.save()
+            if (foundProduct) {
+                foundProduct.quantity += 1;
+            } else {
+                foundCart.cart.push({ product: productId, quantity: 1 });
+            }
+            await foundCart.save()
+            return foundCart
+        }
+        return
+    }
+
+
+    /*
     async decreaseStock(id) {
         let productToCheck = await productModel.findById(id)
         if (productToCheck.stock > 0) {
@@ -46,6 +64,7 @@ class ProductDao {
             return productToCheck.stock
         }
     }
+    */
     async findById(id) {
         let productToCheck = await productModel.findById(id)
         return productToCheck
