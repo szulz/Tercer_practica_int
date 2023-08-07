@@ -21,5 +21,7 @@ module.exports = {
     GITHUB_ID: process.env.GITHUB_ID,
     GOOGLE_ID: process.env.GOOGLE_ID,
     FACEBOOK_ID: process.env.FACEBOOK_ID,
+    GOOGLE_EMAIL: process.env.GOOGLE_EMAIL,
+    GOOGLE_PASSWORD: process.env.GOOGLE_PASSWORD,
 
 }

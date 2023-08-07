@@ -1,5 +1,4 @@
-const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_STATUS} = require("../config/env.config.js");
-
+const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_STATUS } = require("../config/env.config.js");
 
 class Auth {
     async connectionCheck(req, res, next) {
@@ -31,7 +30,7 @@ class Auth {
             console.log('Seguí crack');
             return next();
         } else {
-            throw new Error({message: 'You have no permission to make perform these actions'})
+            throw new Error({ message: 'You have no permission to make perform these actions' })
         }
     }
 
