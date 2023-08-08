@@ -93,23 +93,19 @@ class CartService {
             console.log('EL CARRITO ESTÁ VACIO');
             return
         }
-
-        //ACCCCCAAAAAAAA ESTO DEVUELVE EL STOCK ALMACENADO EN EL CARRO
-        /*
         const productOnCart = cartFound.cart.map(item => item.product._id)
         const quantitiesOnCart = cartFound.cart.map(item => item.quantity)
         for (let i = 0; productOnCart.length > i; i++) {
             let product = await productModel.findById(productOnCart[i])
             console.log(product);
-            product.stock -= quantitiesOnCart[i]
+            product.stock += quantitiesOnCart[i]
             product.save()
         }
-        */
         cartFound.cart = []
         return await cartFound.save()
     }
 
-    async clearCart(id) {
+    async emptyCart(id) {
         let cartData = await cartsDao.findById(id)
         cartData.cart = []
         return cartData.save()

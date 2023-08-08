@@ -52,7 +52,7 @@ class CartsController {
         await ticketService.purchase(user)
     }
 
-    async clearCart(req, res, next) {
+    async returnCartStock(req, res, next) {
         let cartId = req.session.user.cartID
         await cartService.returnAndClear(cartId)
         next()
@@ -60,7 +60,7 @@ class CartsController {
 
     async showTicket(req, res) {
         let cartId = req.session.user.cartID
-        await cartService.returnAndClear(cartId)
+        await cartService.emptyCart(cartId)
         let tickets = await ticketService.find()
         let purchaser = tickets.map(ticket => ticket.purchaser)
         let actualPurchaser = purchaser.length - 1
