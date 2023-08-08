@@ -71,7 +71,7 @@ class CartService {
     async getTotalAmount(products) {
         let totalAmount = []
         let result = 0
-        let price = products.map(product => {
+        let price = await products.map(product => {
             return product.price
         })
         let amount = products.map(x => {
@@ -93,6 +93,8 @@ class CartService {
             console.log('EL CARRITO ESTÁ VACIO');
             return
         }
+
+        //ACCCCCAAAAAAAA ESTO DEVUELVE EL STOCK ALMACENADO EN EL CARRO
         /*
         const productOnCart = cartFound.cart.map(item => item.product._id)
         const quantitiesOnCart = cartFound.cart.map(item => item.quantity)

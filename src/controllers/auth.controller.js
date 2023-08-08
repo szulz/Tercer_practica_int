@@ -1,4 +1,4 @@
-const { PORT } = require("../config/env.config.js")
+const { PORT, ADMIN_EMAIL } = require("../config/env.config.js")
 const SessionDTO = require("../model/DTO/session.dto.js")
 const AuthService = require("../services/auth.service.js")
 const authService = new AuthService

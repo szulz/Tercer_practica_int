@@ -26,7 +26,8 @@ class Auth {
     }
 
     async isAdmin(req, res, next) {
-        if (ADMIN_STATUS == 'true') {
+        console.log('estás en el isadmin');
+        if (req.user.role == 'admin') {
             console.log('Seguí crack');
             return next();
         } else {
@@ -34,6 +35,38 @@ class Auth {
         }
     }
 
+    async denieUsersInSession(req, res, next) {
+        if (req.session.user) {
+            console.log('There is a current session active');
+            return res.redirect('/products')
+        }
+        return next()
+    }
+
+    async allowUsersInSession(req, res, next) {
+        if (req.session.user) {
+            console.log('There is a current session active');
+            return next()
+        }
+        return res.redirect('/auth/login')
+    }
+
+    async isUserCart(req, res, next) {
+        if (req.params.cid === req.session.user.cartID) {
+            console.log('cart validation');
+            return next()
+        }
+        return res.redirect('/auth/fail')
+
+    }
+
+    async blockAdmin(req, res, next) {
+        if (req.user.role == 'admin') {
+            console.log('necesitas ser user');
+            return res.send({ message: 'Admins have not permission to do this' })
+        }
+        return next();
+    }
 }
 
 

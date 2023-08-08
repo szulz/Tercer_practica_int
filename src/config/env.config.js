@@ -23,5 +23,7 @@ module.exports = {
     FACEBOOK_ID: process.env.FACEBOOK_ID,
     GOOGLE_EMAIL: process.env.GOOGLE_EMAIL,
     GOOGLE_PASSWORD: process.env.GOOGLE_PASSWORD,
-
+    TWILIO_ID: process.env.TWILIO_ID,
+    TWILIO_TOKEN: process.env.TWILIO_TOKEN,
+    TWILIO_PHONE: process.env.TWILIO_PHONE,
 }

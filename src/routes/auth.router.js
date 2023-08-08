@@ -9,15 +9,15 @@ const cartsController = new CartsController
 const authController = new AuthController
 
 
-authRouter.get('/logOut', cartsController.clearCart , authController.logOut)
+authRouter.get('/logOut', cartsController.clearCart, authController.logOut)
 
-authRouter.get('/login', auth.currentSession, authController.logInGet)
+authRouter.get('/login', auth.denieUsersInSession, authController.logInGet)
 
-authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/fail' }), authController.login)
+authRouter.post('/login', auth.denieUsersInSession, passport.authenticate('login', { failureRedirect: '/auth/fail' }), authController.login)
 
-authRouter.get('/register', auth.currentSession, authController.registerGet)
+authRouter.get('/register', auth.denieUsersInSession, authController.registerGet)
 
-authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/fail' }), authController.register)
+authRouter.post('/register', auth.denieUsersInSession, passport.authenticate('register', { failureRedirect: '/auth/fail' }), authController.register)
 
 authRouter.get('/fail', authController.failure)
 

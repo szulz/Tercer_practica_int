@@ -7,7 +7,7 @@ const FacebookStrategy = require('passport-facebook')
 const GoogleStrategy = require('passport-google-oauth2');
 const CartManagerMongoose = require('../services/carts.service.js');
 
-const { GITHUB_ID, GOOGLE_ID, FACEBOOK_ID, PORT } = require('./env.config.js');
+const { GITHUB_ID, GOOGLE_ID, FACEBOOK_ID, PORT, ADMIN_EMAIL, ADMIN_STATUS } = require('./env.config.js');
 const userModel = require('../model/schemas/users.model.js');
 const cartManagerMongoose = new CartManagerMongoose
 
@@ -150,6 +150,14 @@ async function startPassport() {
                     console.log('pass incorrecto');
                     return done(null, false)
                 }
+                if (ADMIN_STATUS == 'true') {
+                    if (ADMIN_EMAIL == user.email) {
+                        await userModel.findByIdAndUpdate(user._id, { role: 'admin' }, { new: true })
+                        console.log('se actualizo el status a admin');
+                    }
+                } else {
+                    user.role = 'user'
+                }
                 return done(null, user)
             } catch (err) {
                 return done(err)
@@ -178,6 +186,11 @@ async function startPassport() {
                     newUser.cart = cartId
                     newUser.password = createHash(newUser.password)
                     let userCreated = await userModel.create(newUser);
+                    if (ADMIN_STATUS == 'true') {
+                        if (ADMIN_EMAIL == userCreated.email) {
+                            await userModel.findByIdAndUpdate(userCreated._id, { role: 'admin' }, { new: true })
+                        }
+                    }
                     return done(null, userCreated)
                 } catch (err) {
                     console.log(err);

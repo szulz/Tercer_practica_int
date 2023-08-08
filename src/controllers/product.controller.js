@@ -1,9 +1,10 @@
+const { PORT } = require("../config/env.config.js");
 const ProductDao = require("../model/DAOs/products/products.mongo.dao.js");
 const productModel = require("../model/schemas/product.schema.js");
 const productDao = new ProductDao
 const ProductService = require("../services/product.service.js");
 const productService = new ProductService
-
+const ProductManagerMongoose = require('../services/product.service.js');
 
 class ProductController {
 
@@ -49,6 +50,16 @@ class ProductController {
     async returnStock(req, res) {
         let product = await productDao.findById(req.params.pid)
         return res.status(200).send({ data: product.stock });
+    }
+
+    async showAll(req, res) {
+        let cartId = await req.session.user.cartID
+        let getAll = await productService.getAll(req.query, req.originalUrl);
+        const { payload } = getAll
+        let products = payload.map((payload) => {
+            return { title: payload.title, description: payload.description, price: payload.price, stock: payload.stock, _id: JSON.stringify(payload._id) }
+        })
+        return res.render("products", { products, getAll, cartId, PORT })
     }
 
 }
