@@ -5,24 +5,30 @@ const Auth = require('../middlewares/auth')
 const auth = new Auth
 
 
-chatRouter.get('/', /*auth.allowUsersInSession,*/async (req, res) => {
-    return res.render('chat', {})
+chatRouter.get('/', auth.allowUsersInSession, auth.blockAdmin, async (req, res) => {
+    let userName = req.session.user.email
+    return res.render('chat', { userName })
 })
 
 const { Server } = require('socket.io');
-
-async function connectSocket(httpServer) {
+function connectSocket(httpServer) {
     const socketServer = new Server(httpServer)
+    const users = {}
+    socketServer.on('connection', (socket) => {
 
-    socketServer.on('connection', async (socket) => {
-        console.log('se abrio un socket en ' + socket.id);
+        socket.on('new-user', userName => {
+            users[socket.id] = userName
+            socket.broadcast.emit('user-connected', userName)
+        })
+        socket.on('send-chat-message', message => {
 
-        socket.on('msgFront', async (message) => {
-            console.log(message.msg);
-            
+            socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })
         });
 
-
+        socket.on('disconnect', () => {
+            socket.broadcast.emit('user-disconnect', users[socket.id])
+            delete users[socket.id]
+        })
     });
 }
 
