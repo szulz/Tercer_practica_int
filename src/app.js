@@ -9,7 +9,7 @@ const sessionRouter = require('./routes/sessions.router.js');
 const cartsRouter = require('./routes/carts.router.js')
 const authRouter = require('./routes/auth.router.js');
 const smsRouter = require('./routes/sms.router.js');
-const chatRouter = require('./routes/chat.router.js');
+const { chatRouter, connectSocket } = require('./routes/chat.router.js');
 const passport = require('passport')
 const startPassport = require('./config/passport.config.js');
 const { MONGO_URL, PORT, ADMIN_EMAIL, ADMIN_PASSWORD, MODE, ADMIN_STATUS } = require('./config/env.config.js');
@@ -68,25 +68,11 @@ app.use('/mail', mailRouter)
 app.use('/sms', smsRouter)
 app.use('/chat', chatRouter)
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port http://localhost:${PORT}`)
-});
-
-/*
-const { Server } = require('socket.io')
-
 const httpServer = app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`)
 });
 
-const socketServer = new Server(httpServer)
+connectSocket(httpServer)
 
-socketServer.on('connection', (socket) => {
-        console.log('se abrio un socket ' + socket.id);
-    })
-
-module.exports = httpServer
-
-*/
 
 
